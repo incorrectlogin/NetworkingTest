@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=3 uid="uid://brjr44o7orh4u"]
+
+[ext_resource type="PackedScene" uid="uid://cx6popbgjcufv" path="res://Scenes/Enemy.tscn" id="1_s3wjw"]
+[ext_resource type="Script" path="res://Scripts/NetworkController.cs" id="2_5x6we"]
+[ext_resource type="PackedScene" uid="uid://dlosi7opn8uke" path="res://Scenes/Player.tscn" id="3_lswpm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ko1g3"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="Level" type="Node3D"]
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.510727, 0, -3.60498)
+use_collision = true
+size = Vector3(17.2634, 1, 18)
+material = SubResource("StandardMaterial3D_ko1g3")
+
+[node name="Spawnpoints" type="Node3D" parent="."]
+
+[node name="Marker3D" type="Marker3D" parent="Spawnpoints" groups=["Spawnpoints"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.09411, 0.748811, 2.37388)
+
+[node name="Enemy" parent="." instance=ExtResource("1_s3wjw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.01465, 0.500001, -6.76049)
+
+[node name="Enemy2" parent="." instance=ExtResource("1_s3wjw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.851734, 0.500001, -6.71186)
+
+[node name="Enemy3" parent="." instance=ExtResource("1_s3wjw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.04543, 0.5, -6.87606)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Host" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 16.0
+offset_right = 187.0
+offset_bottom = 55.0
+text = "Host"
+
+[node name="Join" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 69.0
+offset_right = 185.0
+offset_bottom = 105.0
+text = "Join"
+
+[node name="NetworkControllerNode" type="Node3D" parent="."]
+script = ExtResource("2_5x6we")
+playerCharacter = ExtResource("3_lswpm")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.801191, 0.535238, -0.267607, -5.85138e-09, 0.447197, 0.894435, 0.598408, -0.716614, 0.35829, 0, 2.7072, 0)
+shadow_enabled = true
+
+[connection signal="pressed" from="Control/Host" to="NetworkControllerNode" method="OnHostPressed" flags=6]
+[connection signal="pressed" from="Control/Join" to="NetworkControllerNode" method="OnJoinPressed" flags=6]
